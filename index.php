@@ -1,6 +1,13 @@
 <?php 
 include 'sqlConnection.php';
 include 'header.php';
+if(isset ($_GET['category'])){
+	$category = $_GET['category'];
+	$categoryName = $_GET['categoryName'];
+} else {
+	$category = 0;
+	$categoryName = "Tüm Ürünler";
+}
 if (!isset ($_GET['page']) ) {  
 	$currentPage = 1;  
 } else {  
@@ -15,9 +22,9 @@ $page_first_result = ($currentPage-1) * $results_per_page;
 				<?php include 'category.php'; ?>
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Ürünler</h2>
+						<h2 class="title text-center"><?php echo $categoryName;?></h2>
 						<?php 
-							$sql = "SELECT * FROM `products`";
+							$sql = $category == 0 ? "SELECT * FROM `products`":"SELECT * FROM products where categoryId =".$category;
 							$result = $conn->query($sql);
 							if ($result->num_rows > 0) {
 								$number_of_result = $result->num_rows; 
@@ -43,7 +50,7 @@ $page_first_result = ($currentPage-1) * $results_per_page;
 													<div class="overlay-content">
 														<h2>$56</h2>
 														<p><?php echo $row['productName']; ?></p>
-														<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Teklif Ver</a>
+														<a href="product-details.php" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Teklif Ver</a>
 													</div>
 												</div>
 											</div>

@@ -10,7 +10,7 @@
 		 ?>
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4 class="panel-title"><a href="#"><?php echo $row['category']; ?></a></h4>
+					<h4 class="panel-title active"><a href="index.php?category=<?php echo $row['id']; ?>&categoryName=<?php echo $row['category'];?>"><?php echo $row['category']; ?></a></h4>
 				</div>
 			</div>
 		<?php

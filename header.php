@@ -1,3 +1,12 @@
+<?php 
+	session_start();
+	$fileName = basename($_SERVER['PHP_SELF']);
+	$sessionControl = isset($_SESSION["loggedin"]);
+	if($sessionControl){
+		$currentUserName=$_SESSION['name'];
+	}
+	echo $sessionControl;
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +66,7 @@
 				<div class="row">
 					<div class="col-md-4 clearfix">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+							<a href="index.php"><img src="images/home/logo.png" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right clearfix">
 							<div class="btn-group">
@@ -84,10 +93,33 @@
 						</div>
 					</div>
 					<div class="col-md-8 clearfix">
-						<div class="shop-menu clearfix pull-right">
+						<div class="shop-menu clearfix pull-right btn-group">
 							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<?php 
+									if($sessionControl){
+										echo '
+											<div class="panel-heading">
+												<h4 class="panel-title">
+													<a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
+														<i class="fa fa-user"></i>
+														'.$currentUserName.'
+													</a>
+												</h4>
+											</div>
+											<div id="sportswear" class="panel-collapse collapse">
+												<div class="panel-body">
+													<ul>
+														<li><a href="">Teklifler</a></li>
+														<li><a href="logout.php">Çıkış Yap</a></li>
+													</ul>
+												</div>
+											</div>
+										';
+									}else {
+										$isActive = strcmp($fileName,"login.php") ? "":"active"; 
+										echo '<li><a class="'.$isActive.'" href="login.php"><i class="fa fa-lock"></i> Login</a></li>';
+									}
+								?>
 							</ul>
 						</div>
 					</div>
@@ -109,13 +141,12 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="shop.html" class="active">Ana Sayfa</a></li>
+								<li><a href="index.php" class="<?php echo strcmp($fileName,'index.php') ? "":"active";?>">Ana Sayfa</a></li>
 								<li><a href="#">İletişim</a></li>
 							</ul>
 						</div>
 					</div>
-					
-				</div>
 				</div>
 			</div>
+		</div>
 	</header>
