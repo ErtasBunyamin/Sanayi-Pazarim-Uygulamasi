@@ -1,5 +1,7 @@
 ﻿<?php 
+include_once 'sqlConnection.php';
 // Define variables and initialize with empty values
+$conn=OpenCon();
 $username = $password = $confirm_password = "";	
 $username_err = $password_err = $email_err = "";
 $registercompleted = false;
@@ -92,5 +94,6 @@ if(isset($_POST['email']) && isset($_POST['password']) && isset($_POST['username
 	        }
 	    }
 	}
-}  
+}
+CloseCon($conn);  
  ?>

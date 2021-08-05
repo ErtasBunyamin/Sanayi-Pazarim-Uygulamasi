@@ -10,12 +10,12 @@
 	include 'LoginControl.php';
 	include 'header.php';
 	$query = "SELECT ID FROM USERS";
+	$conn = OpenCon();
 	$result = mysqli_query($conn, $query);
 
 	//users tablosunun var olup olmadigina bakiliyor
 	//sistemde hata olmasini onlemek icin
 	if(empty($result)){
-		echo "girdiii";
 		//yok ise olusturuluyor
 		$query = "CREATE TABLE USERS (
                           ID int(11) AUTO_INCREMENT,
@@ -44,9 +44,10 @@
             }
             mysqli_stmt_close($stmt);
         }else {
-        	echo 'olmadi';
+        	echo 'Database Baglantisinda bir hata meydana geldi !';
         }
 	}
+	CloseCon($conn);
 
 
  ?>

@@ -1,5 +1,26 @@
 <?php 
 include 'sqlConnection.php';
+include 'DatabaseFunctions.php';
+
+session_start();
+$id = $_GET['product'];
+if (!$_GET['product'] && isset($_SESSION['productId'])) {
+	$id = $_SESSION['productId'];
+	echo "----------/---------------";
+}else {
+	$_SESSION['productId'] = $id;
+	echo "--------------*--------------";
+}
+
+$product = getProductFromId($id);
+$category = getCategoryFromId($product['categoryId']);
+$offers = getOffersOfProduct($id);
+$maxOffer = getMaxOffer($id);
+include 'offerCheck.php';
+echo "category: ".($category['category']);
+
+
+
 include 'header.php';
  ?>
 <section>
@@ -10,20 +31,20 @@ include 'header.php';
 					<div class="product-details"><!--product-details-->
 						<div class="row-sm-7">
 							<div class="view-product">
-								<img src="images/product-details/1.jpg" alt="" />
+								<img src="<?php echo $product['productImage'];?>" onload="this.src='images/shop/default_product_image.png'" onerror="this.onerror=null; this.src='images/shop/default_product_image.png'" alt=""  height="250"/>
 							</div>
 							
 
 						</div>
 						<div class="row-sm-7">
 							<div class="product-information"><!--/product-information-->
-								<h2>Anne Klein Sleeveless Colorblock Scuba</h2>
+								<h2><?php echo $product['productName']; ?></h2>
 								<span>
-									<span>En yüksek teklif : $59</span>
-									<button type="button" class="btn btn-fefault cart">
+									<span><?php echo $maxOffer ? "En yüksek teklif : ".$maxOffer['offerValue']." TL" : "Teklif bulunmamakta!";?></span>
+									<a type="button" href="#reviews"  class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Teklif Ver
-									</button>
+									</a>
 								</span>
 								<p><b>Kategori:</b> Hırdavat</p>
 							</div><!--/product-information-->
@@ -34,19 +55,19 @@ include 'header.php';
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<li><a href="#details" data-toggle="tab">Detaylar</a></li>
-								<li class="active"><a href="#reviews" data-toggle="tab">Teklifler (5)</a></li>
+								<li class="active"><a href="#reviews" data-toggle="tab">Teklifler (<?php echo $offers ? $offers->num_rows : 0; ?>)</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">
 							<div class="tab-pane fade" id="details" >
 								<div class="product-information"><!--/product-information-->
-									<h3>Ürün Adı</h2>
-									<h2>ürün açıklaması!</h3>
-									<p><b>Kategori:</b> Hırdavat</p>
-									<p><b>Ürün teklif olusturulma tarihi:</b> 12.10.20 </p>
-									<p><b>Ürün teklif bitiş tarihi:</b> 12.12.20 </p>
+									<h3><?php echo $product['productName']; ?></h2>
+									<h2><?php echo $product['productDescription']; ?></h3>
+									<p><b>Kategori:</b><?php echo $category['category'];?></p>
+									<p><b>Ürün teklif olusturulma tarihi:</b> <?php echo $product['offerCreateTime']; ?> </p>
+									<p><b>Ürün teklif bitiş tarihi:</b> <?php echo $product['offerFinishedTime']; ?> </p>
 									<span>
-										<span>En yüksek teklif : $59</span>
+										<span><?php echo $maxOffer ? "En yüksek teklif : ".$maxOffer['offerValue']." TL" : "Teklif bulunmamakta!";?></span>
 									</span>
 									
 								</div>
@@ -55,23 +76,43 @@ include 'header.php';
 							
 							<div class="tab-pane fade active in" id="reviews" >
 								<div class="col-sm-12">
-									<ul>
-										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-										<li><a href=""><i class="fa fa-money"></i>500 TL</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+									<?php 
+										if (!$offers) {
+											echo "<p>Bu ürün için teklif bulunmamakta.</p>";
+										}else {
+											while ($row = $offers->fetch_assoc()) {
+												$user = getUserFromId($row['userId']);
+												$date = date_create($row['offerCreateTime']);
+												echo '<ul>
+														<li><a href=""><i class="fa fa-user"></i>'.$user['NAME'].'</a></li>
+														<li><a href=""><i class="fa fa-money"></i>'.$row['offerValue'].' TL</a></li>
+														<li><a href=""><i class="fa fa-calendar-o"></i>'.date_format($date,'d/F/Y').'</a></li>
+													</ul>
+													<p><b>Açıklama : </b>'.$row['offerHead'].'</p>
+													<br>';
+											}
+										}
+
+									 ?>
+									
 									<p><b>Teklifinizi Yapın</b></p>
 									
-									<form action="#">
+									<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 										<span>
-											<input type="number" placeholder="Teklif Değerinizi giriniz."/>
-											<input type="text" placeholder="Açıklamanız."/>
+											<input type="number" name="offerValue" placeholder="Teklif Değerinizi giriniz." required />
+											<?php echo "<p>".!empty($offerValue_err) ? $offerValue_err :""."</p>"; ?>
+											<input type="text" name="offerDescription" placeholder="Açıklamanız." required />
+											<?php echo "<p>".!empty($offerDescription_err) ? $offerDescription_err :""."</p>"; ?>
 										</span>
-										<button type="button" class="btn btn-default pull-right">
+										<button type="Submit" class="btn btn-default">
 											Submit
 										</button>
 									</form>
+									<?php 
+								        if(!empty($offer_err)){
+								            echo '<div class="alert alert-danger">' . $offer_err . '</div>';
+								        }        
+							        ?>
 								</div>
 							</div>
 							

@@ -3,6 +3,8 @@
 		<h2>Kategoriler</h2>
 		<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 		<?php 
+		include_once 'sqlConnection.php';
+			$conn = OpenCon();
 			$sql = "SELECT * FROM productcategories";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0) {
@@ -19,6 +21,7 @@
 			} else {
 				echo "0 results";
 			}
+			CloseCon($conn);
 		?>
 		</div><!--/category-products-->
 	</div>

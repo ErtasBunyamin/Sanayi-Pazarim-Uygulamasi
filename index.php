@@ -14,7 +14,7 @@ if (!isset ($_GET['page']) ) {
 	$currentPage = $_GET['page'];  
 }   
 $results_per_page = 9;  
-$page_first_result = ($currentPage-1) * $results_per_page;  
+$page_first_result = ($currentPage-1) * $results_per_page; 
 ?>
 	<section>
 		<div class="container">
@@ -24,13 +24,14 @@ $page_first_result = ($currentPage-1) * $results_per_page;
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center"><?php echo $categoryName;?></h2>
 						<?php 
-							$sql = $category == 0 ? "SELECT * FROM `products`":"SELECT * FROM products where categoryId =".$category;
+							$conn = OpenCon();
+							$sql = $category === 0 ? "SELECT * FROM products":"SELECT * FROM products where categoryId =".$category;
 							$result = $conn->query($sql);
 							if ($result->num_rows > 0) {
 								$number_of_result = $result->num_rows; 
 								$number_of_page = ceil ($number_of_result / $results_per_page);  
 							    // her bir satırı döker
-							    $sql = "SELECT * FROM products LIMIT ".$page_first_result.','.$results_per_page;
+							    $sql = $sql." LIMIT ".$page_first_result.','.$results_per_page;
 							    $result = $conn->query($sql);
 								while($row = $result->fetch_assoc()) {
 						?>
@@ -50,7 +51,8 @@ $page_first_result = ($currentPage-1) * $results_per_page;
 													<div class="overlay-content">
 														<h2>$56</h2>
 														<p><?php echo $row['productName']; ?></p>
-														<a href="product-details.php" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Teklif Ver</a>
+														<input type="hidden" name="product" value="<?php echo htmlentities(serialize($row)); ?>">
+														<a type="submit" href="product-details.php?product=<?php echo $row['id']; ?>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Teklif Ver</a>
 													</div>
 												</div>
 											</div>
@@ -63,7 +65,9 @@ $page_first_result = ($currentPage-1) * $results_per_page;
 
 							    echo "0 results";
 
-							}?>
+							}
+							CloseCon($conn);
+							?>
 						
 						
 					</div><!--features_items-->
@@ -72,7 +76,8 @@ $page_first_result = ($currentPage-1) * $results_per_page;
 						<ul class="pagination">
 							<?php for ($page=1; $page <= $number_of_page; $page++) {
 								$isActive = ($page == $currentPage) ? "active" : "" ; 
-								echo '<li class='.$isActive.'><a href="index.php?page='.$page.'">'.$page.'</a></li>';
+								$isCategory = $category === 0 ? "" : "&category=".$category."&categoryName=".$categoryName;
+								echo '<li class='.$isActive.'><a href="index.php?page='.$page.$isCategory.'">'.$page.'</a></li>';
 							}?>
 						</ul>
 					</div><!--pagination-->

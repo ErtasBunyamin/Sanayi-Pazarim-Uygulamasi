@@ -1,4 +1,6 @@
 ﻿<?php 
+include_once 'sqlConnection.php';
+$conn = OpenCon();
 if(isset($_POST['logEmail']) && isset($_POST['logPassword'])) {
 	// Initialize the session
 	session_start();
@@ -82,5 +84,5 @@ if(isset($_POST['logEmail']) && isset($_POST['logPassword'])) {
 	    }
 	}
 }
-ob_end_flush();
+CloseCon($conn);
 ?>
