@@ -1,89 +1,151 @@
+<!--
+=========================================================
+* Argon Design System - v1.2.2
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-design-system
+* Copyright 2020 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 <?php 
-include 'sqlConnection.php';
-include 'header.php';
-if(isset ($_GET['category'])){
-	$category = $_GET['category'];
-	$categoryName = $_GET['categoryName'];
-} else {
-	$category = 0;
-	$categoryName = "Tüm Ürünler";
-}
-if (!isset ($_GET['page']) ) {  
-	$currentPage = 1;  
-} else {  
-	$currentPage = $_GET['page'];  
-}   
-$results_per_page = 9;  
-$page_first_result = ($currentPage-1) * $results_per_page; 
-?>
-	<section>
-		<div class="container">
-			<div class="row">				
-				<?php include 'category.php'; ?>
-				<div class="col-sm-9 padding-right">
-					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center"><?php echo $categoryName;?></h2>
-						<?php 
-							$conn = OpenCon();
-							$sql = $category === 0 ? "SELECT * FROM products":"SELECT * FROM products where categoryId =".$category;
-							$result = $conn->query($sql);
-							if ($result->num_rows > 0) {
-								$number_of_result = $result->num_rows; 
-								$number_of_page = ceil ($number_of_result / $results_per_page);  
-							    // her bir satırı döker
-							    $sql = $sql." LIMIT ".$page_first_result.','.$results_per_page;
-							    $result = $conn->query($sql);
-								while($row = $result->fetch_assoc()) {
-						?>
-							        <div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-														<img src="<?php echo $row['productImage'];?>" onload="this.src='images/shop/default_product_image.png'" onerror="this.onerror=null; this.src='images/shop/default_product_image.png'" alt=""  height="250"/>
-													<h2><?php echo $row['id']; ?> TL</h2>
-													<p><?php echo $row['productName']; ?></p>
-													<p style="overflow : hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-														<?php echo $row['productSubDescription']; ?>
-													</p>
-													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Teklif Ver</a>
-												</div>
-												<div class="product-overlay">
-													<div class="overlay-content">
-														<h2>$56</h2>
-														<p><?php echo $row['productName']; ?></p>
-														<input type="hidden" name="product" value="<?php echo htmlentities(serialize($row)); ?>">
-														<a type="submit" href="product-details.php?product=<?php echo $row['id']; ?>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Teklif Ver</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>	    
-						<?php
-								}
+include 'Database/DatabaseControl.php';
+ ?>
+<!DOCTYPE html>
+<html lang="en">
 
-							} else {
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <title>
+    Sanayi Pazarım Giriş
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link href="assets/css/font-awesome.css" rel="stylesheet" />
+  <link href="assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="assets/css/argon-design-system.css?v=1.2.2" rel="stylesheet" />
+</head>
 
-							    echo "0 results";
+<body class="login-page">
+  <!-- Navbar -->
+  
+  <!-- End Navbar -->
+  <section class="section section-shaped section-lg">
+    <div class="shape shape-style-1 bg-gradient-default">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="container pt-lg-7">
+      <div class="row justify-content-center">
+        <div class="col-lg-5">
+          <div class="card bg-secondary shadow border-0">
+            <div class="card-header bg-white pb-5">
+              <div class="text-muted text-center mb-3"><small>Giriş Yapınız!</small></div>
+              <div class="row btn-wrapper text-center justify-content-center">
+                <a href="admin/login.php" class="btn btn-neutral btn-icon">
+                  <span class="btn-inner--text">Admin Paneli</span>
+                </a>
+                <a href="sanayi_pazarim/index.php" class="btn btn-neutral btn-icon">
+                  <span class="btn-inner--text">Kullanıcı Paneli</span>
+                </a>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="container">
+      <div class="row row-grid align-items-center mb-5">
+        <div class="col-lg-6">
+          <h3 class="text-primary font-weight-light mb-2">Sanayi pazarım uygulamasına Hoş Geldiniz!</h3>
+          <h4 class="mb-0 font-weight-light">Lütfen <strong>Gerekli Belgeler</strong> klasörü içerisinde bulunan sql kodlarını veri tabanında çalıştırınız. Veri tabanı bilgilerini <strong>sqlConnection.php</strong> içerisinden değiştirdiğinizden emin olun.</h4>
+        </div>
+        <div class="col-lg-6 text-lg-center btn-wrapper">
+          <button target="_blank" href="" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+            <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+          </button>
+          <button target="_blank" href="" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
+            <span class="btn-inner--icon"><i class="fab fa-facebook"></i></span>
+          </button>
+          <button target="_blank" href="" rel="nofollow" class="btn btn-icon-only btn-dribbble rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+            <span class="btn-inner--icon"><i class="fa fa-dribbble"></i></span>
+          </button>
+          <button target="_blank" href="" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
+            <span class="btn-inner--icon"><i class="fa fa-github"></i></span>
+          </button>
+        </div>
+      </div>
+      <hr>
+      <div class="row align-items-center justify-content-md-between">
+        <div class="col-md-6">
+          <div class="copyright">
+            &copy; 2021 <a href="" target="_blank">Bera Yazılım</a>.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <ul class="nav nav-footer justify-content-end">
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">Bera Yazılım</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">Hakkımızda</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" target="_blank">Lisans</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--   Core JS Files   -->
+  <script src="assets/js/core/jquery.min.js" type="text/javascript"></script>
+  <script src="assets/js/core/popper.min.js" type="text/javascript"></script>
+  <script src="assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+  <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+  <script src="assets/js/plugins/bootstrap-switch.js"></script>
+  <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+  <script src="assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+  <script src="assets/js/plugins/moment.min.js"></script>
+  <script src="assets/js/plugins/datetimepicker.js" type="text/javascript"></script>
+  <script src="assets/js/plugins/bootstrap-datepicker.min.js"></script>
+  <!-- Control Center for Argon UI Kit: parallax effects, scripts for the example pages etc -->
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <script src="assets/js/argon-design-system.min.js?v=1.2.2" type="text/javascript"></script>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS &&
+      TrackJS.install({
+        token: "ee6fab19c5a04ac1a32a645abde4613a",
+        application: "argon-design-system-pro"
+      });
+  </script>
+</body>
 
-							}
-							CloseCon($conn);
-							?>
-						
-						
-					</div><!--features_items-->
-
-					<div class="text-center"><!--pagination-->
-						<ul class="pagination">
-							<?php for ($page=1; $page <= $number_of_page; $page++) {
-								$isActive = ($page == $currentPage) ? "active" : "" ; 
-								$isCategory = $category === 0 ? "" : "&category=".$category."&categoryName=".$categoryName;
-								echo '<li class='.$isActive.'><a href="index.php?page='.$page.$isCategory.'">'.$page.'</a></li>';
-							}?>
-						</ul>
-					</div><!--pagination-->
-				</div>
-			</div>
-		</div>
-	</section>
-
-<?php include 'footer.php';?>
+</html>
