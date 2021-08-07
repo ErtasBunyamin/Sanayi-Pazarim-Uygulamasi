@@ -79,7 +79,7 @@ include 'Database/DatabaseControl.php';
       <div class="row row-grid align-items-center mb-5">
         <div class="col-lg-6">
           <h3 class="text-primary font-weight-light mb-2">Sanayi pazarım uygulamasına Hoş Geldiniz!</h3>
-          <h4 class="mb-0 font-weight-light">Veri tabanı bağlantısı için <strong>sqlConnection.php</strong> içerisinden bilgileri değiştirdiğinizden emin olun.</h4>
+          <h4 class="mb-0 font-weight-light">Lütfen Veri tabanı bağlantısı için <strong>Database</strong> klasörü içerisindeki <strong>sqlConnection.php</strong> dosyasında bulunan bilgileri güncellediğinizden emin olunuz.</h4>
         </div>
         <div class="col-lg-6 text-lg-center btn-wrapper">
           <button target="_blank" href="" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
