@@ -40,7 +40,7 @@ $page_first_result = ($currentPage-1) * $results_per_page;
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-														<img src="<?php echo $row['productImage'];?>" onload="this.src='images/shop/default_product_image.png'" onerror="this.onerror=null; this.src='images/shop/default_product_image.png'" alt=""  height="250"/>
+														<img src="<?php echo $row['productImage'];?>"  onerror="this.onerror=null; this.src='images/shop/default_product_image.png'" alt=""  height="250"/>
 													<h2><?php $offer = getMaxOffer($row['id']); echo $offer['offerValue']." TL"; ?></h2>
 													<p><?php echo $row['productName']; ?></p>
 													<p style="overflow : hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">

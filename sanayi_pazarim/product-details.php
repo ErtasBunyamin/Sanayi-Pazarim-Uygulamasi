@@ -28,7 +28,7 @@ include 'header.php';
 					<div class="product-details"><!--product-details-->
 						<div class="row-sm-7">
 							<div class="view-product">
-								<img src="<?php echo $product['productImage'];?>" onload="this.src='images/shop/default_product_image.png'" onerror="this.onerror=null; this.src='images/shop/default_product_image.png'" alt=""  height="250"/>
+								<img src="<?php echo $product['productImage'];?>" onerror="this.onerror=null; this.src='images/shop/default_product_image.png'" height="250"/>
 							</div>
 							
 
@@ -43,7 +43,7 @@ include 'header.php';
 										Teklif Ver
 									</a>
 								</span>
-								<p><b>Kategori:</b> Hırdavat</p>
+								<p><b>Kategori:</b><?php echo $category['category'];?></p>
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->

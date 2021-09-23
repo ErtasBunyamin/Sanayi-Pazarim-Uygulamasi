@@ -17,14 +17,14 @@ if(isset($_POST['offerDescription']) && isset($_POST['offerValue'])) {
 	// Processing form data when form is submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 	 
-	    // Check if email is empty
+	    // Check if description is empty
 	    if(empty(trim($_POST["offerDescription"]))){
 	        $offerDescription_err = "Lütfen bir açıklama giriniz.";
 	    } else{
 	        $offerDescription = trim($_POST["offerDescription"]);
 	    }
 	    
-	    // Check if password is empty
+	    // Check if value is empty
 	    if(empty(trim($_POST["offerValue"]))){
 	        $offerValue_err = "Lütfen bir teklif değeri giriniz.";
 	    } else{

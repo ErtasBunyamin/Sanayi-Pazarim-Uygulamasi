@@ -14,7 +14,6 @@ Coded by www.creative-tim.com
 <?php  
   include '../Database/sqlConnection.php';
   include 'Controllers/LoginController.php';
-
 ?>
 <!DOCTYPE html>
 <html>

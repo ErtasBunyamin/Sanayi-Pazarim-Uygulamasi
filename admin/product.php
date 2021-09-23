@@ -23,7 +23,6 @@
               <div class="">
                 <div class="card-profile-image">
                   <div class="shadow bg-primary text-center text-white" style="width: 250px; height: 250px;">
-                    Yükleniyor..
                     <img src="<?php echo $product['productImage']; ?>" onerror="this.onerror=null; this.src='../images/shop/default_product_image.png';" alt=""  height="250">
                   </div>
                 </div>
